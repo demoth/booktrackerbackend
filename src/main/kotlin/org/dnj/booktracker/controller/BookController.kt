@@ -18,8 +18,8 @@ class BookController(
     }
 
     @GetMapping("/book")
-    fun getBooks(name: String): Optional<BookRecord> {
-        return bookRepo.findById(name)
+    fun getBooks(id: String): Optional<BookRecord> {
+        return bookRepo.findById(id)
     }
 
     @PostMapping("/update_book")
@@ -28,8 +28,8 @@ class BookController(
     }
 
     @PostMapping("/delete_book")
-    fun deleteBook(name: String) {
-        bookRepo.findById(name).ifPresent {
+    fun deleteBook(id: String) {
+        bookRepo.findById(id).ifPresent {
             bookRepo.delete(it)
         }
     }
