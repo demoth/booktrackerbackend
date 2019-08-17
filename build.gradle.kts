@@ -7,9 +7,10 @@ plugins {
     kotlin("jvm") version "1.2.71"
     kotlin("plugin.spring") version "1.2.71"
 }
+
 group = "org.dnj"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
