@@ -44,6 +44,10 @@ jobs: # a collection of steps
       - store_artifacts:
           path: build/libs
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+      - run:
+          name: Store build number
+          command: |
+            echo $CIRCLE_BUILD_NUM > /tmp/workspace/BUILD_NUM
   deploy:
     machine:
       enabled: true
@@ -52,7 +56,7 @@ jobs: # a collection of steps
           name: Deploy Over SSH
           command: |
             ssh $SSH_USER@$SSH_HOST "cd $LOCATION; ./stop.sh"
-            ssh $SSH_USER@$SSH_HOST "cd $LOCATION; ./download-release.sh"
+            ssh $SSH_USER@$SSH_HOST "cd $LOCATION; ./download-release.sh `cat /tmp/workspace/BUILD_NUM`"
             ssh $SSH_USER@$SSH_HOST "cd $LOCATION; ./start.sh"
 workflows:
   version: 2

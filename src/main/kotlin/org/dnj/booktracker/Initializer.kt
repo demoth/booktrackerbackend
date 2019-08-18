@@ -15,5 +15,6 @@ class Initializer(
         bookRepo.save(BookRecord("Мозг материален"))
         bookRepo.save(BookRecord("Характер физических законов"))
         bookRepo.save(BookRecord("Маленький принц"))
+        bookRepo.save(BookRecord("Гарри Поттер"))
     }
 }
