@@ -46,9 +46,9 @@ jobs: # a collection of steps
       - run:
           name: Deploy Over SSH
           command: |
-            ssh $SSH_USER@$SSH_HOST "cd $LOCATION; ./stop.sh"
-            ssh $SSH_USER@$SSH_HOST "cd $LOCATION; ./download-release.sh"
-            ssh $SSH_USER@$SSH_HOST "cd $LOCATION; ./start.sh"
+            ssh -o "StrictHostKeyChecking no" $SSH_USER@$SSH_HOST "cd $LOCATION; ./stop.sh"
+            ssh -o "StrictHostKeyChecking no" $SSH_USER@$SSH_HOST "cd $LOCATION; ./download-release.sh"
+            ssh -o "StrictHostKeyChecking no" $SSH_USER@$SSH_HOST "cd $LOCATION; ./start.sh"
 workflows:
   version: 2
   workflow:
