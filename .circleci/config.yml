@@ -51,6 +51,7 @@ jobs: # a collection of steps
       - run:
           name: Deploy Over SSH
           command: |
+            scp build/libs/booktracker*.jar $SSH_USER@$SSH_HOST:$LOCATION
             ssh $SSH_USER@$SSH_HOST "$SSH_DEPLOY_COMMAND"
 workflows:
   version: 2

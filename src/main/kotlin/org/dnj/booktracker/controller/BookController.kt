@@ -24,6 +24,8 @@ class BookController(
 
     @PostMapping("/update_book")
     fun updateBook(@RequestBody book: BookRecord) {
+        if (book.id.isNullOrBlank())
+            book.id = UUID.randomUUID().toString()
         bookRepo.save(book)
     }
 
