@@ -13,5 +13,6 @@ class Initializer(
         bookRepo.save(BookRecord("Тёмная башня 1"))
         bookRepo.save(BookRecord("Властелин колец"))
         bookRepo.save(BookRecord("Мозг материален"))
+        bookRepo.save(BookRecord("Характер физических законов"))
     }
 }
