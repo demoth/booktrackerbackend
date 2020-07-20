@@ -19,3 +19,8 @@ data class User(
         @Id var name: String,
         var password: String
 )
+
+data class LoginRequest(
+        val name: String,
+        val password: String
+)

@@ -1,6 +1,7 @@
 package org.dnj.booktracker.controller
 
 import org.dnj.booktracker.BookTracker
+import org.dnj.booktracker.LoginRequest
 import org.dnj.booktracker.User
 import org.dnj.booktracker.repo.UserRepository
 import org.dnj.booktracker.service.AuthService
@@ -38,9 +39,9 @@ class LoginControllerTest {
 
     @Test
     fun login() {
-
-        val response = rest.postForObject<String>("/login?name=TestAuthUser&password=123", String::class.java)
-        authService.validateToken(response!!)
+        val loginRequest = LoginRequest("TestAuthUser", "123")
+        val response = rest.postForObject<String>("/login", loginRequest, LoginRequest::class)
+        authService.validateToken("Bearer $response")
     }
 
 }

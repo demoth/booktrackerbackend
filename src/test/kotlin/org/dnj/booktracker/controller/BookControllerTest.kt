@@ -2,6 +2,7 @@ package org.dnj.booktracker.controller
 
 import org.dnj.booktracker.BookRecord
 import org.dnj.booktracker.BookTracker
+import org.dnj.booktracker.LoginRequest
 import org.dnj.booktracker.User
 import org.dnj.booktracker.repo.BookRepository
 import org.dnj.booktracker.repo.UserRepository
@@ -16,7 +17,6 @@ import org.springframework.boot.test.web.client.postForObject
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
-import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
@@ -36,7 +36,7 @@ class BookControllerTest {
     @Autowired
     lateinit var rest: TestRestTemplate
 
-    var TEST_USER = User("TestUser", "")
+    var TEST_USER = User("TestUser", "321")
 
     var TEST_BOOK = BookRecord(TEST_USER, "TestBook", TEST_ID, "No meaning", 42)
 
@@ -50,24 +50,36 @@ class BookControllerTest {
     }
 
     @Test
-    fun getBooks() {
-        val response = rest.getForObject("/books", Array<BookRecord>::class.java)
-        assertArrayEquals(arrayOf(TEST_BOOK), response)
+    fun `get books positive`() {
+        val entity = HttpEntity<Array<BookRecord>>(prepareAuthHeaders())
+        val response = rest.exchange(
+            "/books",
+            HttpMethod.GET,
+            entity,
+            Array<BookRecord>::class.java
+        )
+        assertArrayEquals(arrayOf(TEST_BOOK), response.body)
     }
 
     @Test
-    fun deleteBook() {
-        rest.postForObject<String>("/delete_book?id=$TEST_ID", String::class.java)
+    fun `delete book`() {
+        val entity = HttpEntity<String>(prepareAuthHeaders())
+
+        rest.exchange(
+            "/delete_book?id=$TEST_ID",
+            HttpMethod.POST,
+            entity,
+            String::class.java
+        )
+
         assertTrue(bookRepository.findAll().toList().isEmpty())
+
     }
 
     @Test
-    fun getBook() {
-        val headers = HttpHeaders()
-        headers.set("Authentication", TEST_USER.name)
-        val entity = HttpEntity<BookRecord>(headers);
-
-        val response: ResponseEntity<BookRecord> = rest.exchange(
+    fun `get book positive`() {
+        val entity = HttpEntity<BookRecord>(prepareAuthHeaders())
+        val response = rest.exchange(
             "/book?id=$TEST_ID",
             HttpMethod.GET,
             entity,
@@ -77,10 +89,49 @@ class BookControllerTest {
     }
 
     @Test
-    fun updateBook() {
+    fun `update book`() {
         val request = TEST_BOOK.copy(description = "updated_description")
         rest.postForObject("/update_book", request, String::class.java)
+
+        val entity = HttpEntity(request, prepareAuthHeaders())
+
+        rest.exchange(
+            "/update_book",
+            HttpMethod.POST,
+            entity,
+            String::class.java
+        )
+
         assertEquals("updated_description", bookRepository.findById(TEST_ID).get().description)
 
     }
+
+    @Test
+    fun `create new book`() {
+        val request = BookRecord(TEST_USER, "new book", "")
+        rest.postForObject("/update_book", request, String::class.java)
+
+        val entity = HttpEntity(request, prepareAuthHeaders())
+
+        rest.exchange(
+            "/update_book",
+            HttpMethod.POST,
+            entity,
+            String::class.java
+        )
+
+        assertNotNull(bookRepository.findByOwnerName(TEST_USER.name).find {
+            it.name == "new book"
+        })
+
+    }
+
+    private fun prepareAuthHeaders(): HttpHeaders {
+        val loginRequest = LoginRequest(TEST_USER.name, TEST_USER.password)
+        val token = rest.postForObject<String>("/login", loginRequest, LoginRequest::class)
+        val headers = HttpHeaders()
+        headers.set("Authentication", "Bearer $token")
+        return headers
+    }
+
 }
