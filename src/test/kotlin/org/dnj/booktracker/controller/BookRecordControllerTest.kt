@@ -1,9 +1,6 @@
 package org.dnj.booktracker.controller
 
-import org.dnj.booktracker.BookRecord
-import org.dnj.booktracker.BookTracker
-import org.dnj.booktracker.LoginRequest
-import org.dnj.booktracker.User
+import org.dnj.booktracker.*
 import org.dnj.booktracker.repo.BookRepository
 import org.dnj.booktracker.repo.UserRepository
 import org.junit.Assert.*
@@ -128,9 +125,9 @@ class BookRecordControllerTest {
 
     private fun prepareAuthHeaders(): HttpHeaders {
         val loginRequest = LoginRequest(TEST_USER.name, TEST_USER.password)
-        val token = rest.postForObject<String>("/login", loginRequest, LoginRequest::class)
+        val loginResponse = rest.postForObject<LoginResponse>("/login", loginRequest, LoginRequest::class)
         val headers = HttpHeaders()
-        headers.set("Authentication", "Bearer $token")
+        headers.set("Authentication", "Bearer ${loginResponse!!.jwt}")
         return headers
     }
 

@@ -24,3 +24,11 @@ data class LoginRequest(
         val name: String,
         val password: String
 )
+
+data class LoginResponse(
+        val jwt: String
+)
+
+data class ErrorResponse(
+        val message: String
+)

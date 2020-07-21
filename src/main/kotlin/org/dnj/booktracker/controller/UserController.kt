@@ -1,6 +1,7 @@
 package org.dnj.booktracker.controller
 
 import org.dnj.booktracker.BookTrackerException
+import org.dnj.booktracker.LoginResponse
 import org.dnj.booktracker.User
 import org.dnj.booktracker.repo.UserRepository
 import org.dnj.booktracker.service.AuthService
@@ -20,7 +21,7 @@ class UserController(
     @PostMapping("/register")
     fun registerNewUser(
         @RequestBody user: User
-    ): String {
+    ): LoginResponse {
         if (userRepository.findById(user.name).isPresent)
             throw BookTrackerException("This name is taken", HttpStatus.BAD_REQUEST)
         userRepository.save(user)

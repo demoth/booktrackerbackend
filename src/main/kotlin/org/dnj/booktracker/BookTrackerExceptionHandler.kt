@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 @ControllerAdvice
 class BookTrackerExceptionHandler {
     @ExceptionHandler(BookTrackerException::class)
-    fun handleAllExceptions(e: BookTrackerException): ResponseEntity<String> {
-        return ResponseEntity(e.message, e.httpStatus)
+    fun handleAllExceptions(e: BookTrackerException): ResponseEntity<ErrorResponse> {
+        return ResponseEntity(ErrorResponse(e.message), e.httpStatus)
     }
 }

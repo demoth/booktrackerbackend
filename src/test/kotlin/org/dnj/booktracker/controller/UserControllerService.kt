@@ -1,27 +1,31 @@
 package org.dnj.booktracker.controller
 
-import org.dnj.booktracker.*
+import org.dnj.booktracker.BookTracker
+import org.dnj.booktracker.ErrorResponse
+import org.dnj.booktracker.LoginResponse
+import org.dnj.booktracker.User
 import org.dnj.booktracker.repo.UserRepository
 import org.dnj.booktracker.service.AuthService
-import org.junit.Assert
-import org.junit.Before
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
 import org.junit.Test
-import org.junit.jupiter.api.Disabled
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
+import org.springframework.boot.test.web.client.exchange
 import org.springframework.boot.test.web.client.postForObject
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit4.SpringRunner
 
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = [BookTracker::class])
-class LoginControllerTest {
+class UserControllerService {
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -32,34 +36,21 @@ class LoginControllerTest {
     @Autowired
     lateinit var authService: AuthService
 
-    var TEST_USER = User("TestAuthUser", "123")
-
-
-    @Before
-    fun setUp() {
-        userRepository.save(TEST_USER)
-    }
-
     @Test
-    fun login() {
-        val loginRequest = LoginRequest(TEST_USER.name, TEST_USER.password)
-        val response = rest.postForObject<LoginResponse>("/login", loginRequest, LoginRequest::class)
+    fun `create new user and login`() {
+        val user = User("NewUser", "123")
+        val response = rest.postForObject<LoginResponse>("/register", user, User::class)
         authService.validateToken("Bearer ${response!!.jwt}")
     }
 
     @Test
-    fun `wrong password`() {
-        val loginRequest = LoginRequest(TEST_USER.name, "wrong password")
-        val response2 = rest.exchange("/login", HttpMethod.POST, HttpEntity(loginRequest), ErrorResponse::class.java)
-        Assert.assertEquals(HttpStatus.UNAUTHORIZED, response2!!.statusCode)
+    fun `cannot create two users with the same name`() {
+        val user1 = User("NewUser1", "123")
+        val response1 = rest.postForObject<LoginResponse>("/register", user1, User::class)
+        authService.validateToken("Bearer ${response1!!.jwt}")
+
+        val user2 = User("NewUser1", "123")
+        val response2 = rest.exchange("/register", HttpMethod.POST, HttpEntity(user2), ErrorResponse::class.java)
+        assertEquals(HttpStatus.BAD_REQUEST, response2!!.statusCode)
     }
-
-    @Test
-    fun `login user does not exist`() {
-        val loginRequest = LoginRequest("no such user", "123")
-        val response2 = rest.exchange("/login", HttpMethod.POST, HttpEntity(loginRequest), ErrorResponse::class.java)
-        Assert.assertEquals(HttpStatus.NOT_FOUND, response2!!.statusCode)
-
-    }
-
 }

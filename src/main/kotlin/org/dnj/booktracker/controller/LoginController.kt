@@ -1,6 +1,7 @@
 package org.dnj.booktracker.controller
 
 import org.dnj.booktracker.LoginRequest
+import org.dnj.booktracker.LoginResponse
 import org.dnj.booktracker.service.AuthService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController
 class LoginController(@Autowired val authService: AuthService) {
 
     @PostMapping("/login")
-    fun login(@RequestBody login: LoginRequest): String {
+    fun login(@RequestBody login: LoginRequest): LoginResponse {
         return authService.loginUser(login.name, login.password)
     }
 

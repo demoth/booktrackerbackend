@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import org.dnj.booktracker.BookTrackerException
+import org.dnj.booktracker.LoginResponse
 import org.dnj.booktracker.User
 import org.dnj.booktracker.repo.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -40,7 +41,7 @@ class AuthService(@Autowired private val userRepository: UserRepository) {
     /**
      * @return token after successful identification and authentication
      */
-    fun loginUser(name: String, password: String): String {
+    fun loginUser(name: String, password: String): LoginResponse {
         val user = userRepository.findById(name).orElseThrow {
             throw BookTrackerException("No such user", HttpStatus.NOT_FOUND)
         }
@@ -50,10 +51,10 @@ class AuthService(@Autowired private val userRepository: UserRepository) {
         }
 
         try {
-            return JWT.create()
+            return LoginResponse(JWT.create()
                 .withIssuer(ISSUER)
                 .withClaim(CLAIM_NAME, user.name)
-                .sign(Algorithm.HMAC256(JWT_SECRET))
+                .sign(Algorithm.HMAC256(JWT_SECRET)))
         } catch (e: Exception) {
             throw BookTrackerException("Could not authenticate", HttpStatus.INTERNAL_SERVER_ERROR)
         }
