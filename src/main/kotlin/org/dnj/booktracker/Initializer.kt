@@ -12,8 +12,8 @@ class Initializer(
     @Autowired val userRepo: UserRepository
 ) : CommandLineRunner {
     override fun run(vararg args: String?) {
-        val daniil = userRepo.save(User("daniil", ""))
-        val julia = userRepo.save(User("julia", ""))
+        val daniil = userRepo.save(User("daniil@example.com", "test1"))
+        val julia = userRepo.save(User("julia@example.com", "test2"))
 
         bookRepo.save(BookRecord(daniil, "Тёмная башня 1"))
         bookRepo.save(BookRecord(daniil, "Властелин колец"))

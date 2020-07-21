@@ -24,7 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = [BookTracker::class])
-class BookControllerTest {
+class BookRecordControllerTest {
     private val TEST_ID = "id1"
 
     @Autowired

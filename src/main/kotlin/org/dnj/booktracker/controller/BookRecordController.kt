@@ -9,7 +9,7 @@ import java.util.*
 
 @RestController
 @CrossOrigin
-class BookController(
+class BookRecordController(
     @Autowired val bookRepo: BookRepository,
     @Autowired val authService: AuthService
 ) {
