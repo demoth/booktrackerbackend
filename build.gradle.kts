@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("plugin.jpa") version "1.3.71"
+    kotlin("plugin.jpa") version "1.5.0-RC"
     id("org.springframework.boot") version "2.2.2.RELEASE"
     id("io.spring.dependency-management") version "1.0.8.RELEASE"
-    kotlin("jvm") version "1.3.71"
-    kotlin("plugin.spring") version "1.3.71"
+    kotlin("jvm") version "1.5.0-RC"
+    kotlin("plugin.spring") version "1.5.0-RC"
 }
 
 group = "org.dnj"
