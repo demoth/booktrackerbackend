@@ -1,7 +1,7 @@
 # Book Tracker Backend
 Backend for a book tracking application
 
-CircleCi build: [![CircleCI](https://circleci.com/gh/demoth/booktrackerbackend/tree/master.svg?style=svg)](https://circleci.com/gh/demoth/booktrackerbackend/tree/master)
+![Build Status](https://github.com/demoth/booktrackerbackend/actions/workflows/gradle.yml/badge.svg)
 
 Simple backend application to work with book reading records
 
