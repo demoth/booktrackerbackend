@@ -3,10 +3,10 @@ package org.dnj.booktracker.controller
 import org.dnj.booktracker.*
 import org.dnj.booktracker.repo.BookRepository
 import org.dnj.booktracker.repo.UserRepository
-import org.junit.Assert.*
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.web.client.TestRestTemplate
@@ -15,10 +15,10 @@ import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.test.context.ContextConfiguration
-import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.context.junit.jupiter.SpringExtension
 
 
-@RunWith(SpringRunner::class)
+@ExtendWith(SpringExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes = [BookTracker::class])
 class BookRecordControllerTest {
@@ -37,7 +37,7 @@ class BookRecordControllerTest {
 
     var TEST_BOOK = BookRecord(TEST_USER, "TestBook", TEST_ID, "No meaning", 42)
 
-    @Before
+    @BeforeEach
     fun setUp() {
         bookRepository.deleteAll()
         userRepository.deleteAll()

@@ -10,6 +10,7 @@ import org.dnj.booktracker.repo.UserRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
 class AuthService(@Autowired private val userRepository: UserRepository) {
@@ -17,7 +18,7 @@ class AuthService(@Autowired private val userRepository: UserRepository) {
 
     private val ISSUER = "booktracker"
 
-    private val JWT_SECRET = System.getenv("JWT_SECRET")
+    private val JWT_SECRET = System.getenv("JWT_SECRET") ?: UUID.randomUUID().toString()
 
     private val VERIFIER: JWTVerifier = JWT.require(Algorithm.HMAC256(JWT_SECRET)).withIssuer(ISSUER).build()
 
@@ -27,7 +28,7 @@ class AuthService(@Autowired private val userRepository: UserRepository) {
     fun validateToken(authHeader: String): User {
         val (type, token) = authHeader.split(" ")
         if (type != "Bearer")
-            throw BookTrackerException("Authentication $type is not supproted", HttpStatus.BAD_REQUEST)
+            throw BookTrackerException("Authentication $type is not supported", HttpStatus.BAD_REQUEST)
         val userName: String = try {
             VERIFIER.verify(token).getClaim(CLAIM_NAME).asString()
         } catch (e: Exception) {
