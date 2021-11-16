@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booktracker
+  labels:
+    app: booktracker-back
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booktracker-back
+  template:
+    metadata:
+      labels:
+        app: booktracker-back
+    spec:
+      containers:
+        - name: booktracker-back
+          image: localhost:32000/booktracker-backend:0.0.2-SNAPSHOT
+          ports:
+            - containerPort: 8080
