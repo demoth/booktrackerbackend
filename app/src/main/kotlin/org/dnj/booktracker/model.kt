@@ -16,16 +16,17 @@ data class BookRecord(
 
 @Entity
 data class User(
-        @Id var name: String,
+        @Id var username: String,
         var password: String
 )
 
 data class LoginRequest(
-        val name: String,
+        val username: String,
         val password: String
 )
 
 data class LoginResponse(
+        val username: String,
         val jwt: String
 )
 

@@ -19,7 +19,7 @@ class BookRecordController(
         @RequestHeader("Authentication") token: String
     ): Iterable<BookRecord> {
         val user = authService.validateToken(token)
-        return bookRepo.findByOwnerName(user.name)
+        return bookRepo.findByOwnerUsername(user.username)
     }
 
     @GetMapping("/book")
@@ -28,7 +28,7 @@ class BookRecordController(
         id: String
     ): Optional<BookRecord> {
         val user = authService.validateToken(token)
-        return bookRepo.findByIdAndOwnerName(id, user.name)
+        return bookRepo.findByIdAndOwnerUsername(id, user.username)
     }
 
     @PostMapping("/update_book")
@@ -50,7 +50,7 @@ class BookRecordController(
     ) {
         val user = authService.validateToken(token)
 
-        bookRepo.findByIdAndOwnerName(id, user.name).ifPresent {
+        bookRepo.findByIdAndOwnerUsername(id, user.username).ifPresent {
             bookRepo.delete(it)
         }
     }

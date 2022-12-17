@@ -52,9 +52,10 @@ class AuthService(@Autowired private val userRepository: UserRepository) {
         }
 
         try {
-            return LoginResponse(JWT.create()
+            return LoginResponse(name,
+                JWT.create()
                 .withIssuer(ISSUER)
-                .withClaim(CLAIM_NAME, user.name)
+                .withClaim(CLAIM_NAME, user.username)
                 .sign(Algorithm.HMAC256(JWT_SECRET)))
         } catch (e: Exception) {
             throw BookTrackerException("Could not authenticate", HttpStatus.INTERNAL_SERVER_ERROR)

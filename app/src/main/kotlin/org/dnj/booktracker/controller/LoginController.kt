@@ -15,7 +15,7 @@ class LoginController(@Autowired val authService: AuthService) {
 
     @PostMapping("/login")
     fun login(@RequestBody login: LoginRequest): LoginResponse {
-        return authService.loginUser(login.name, login.password)
+        return authService.loginUser(login.username, login.password)
     }
 
 }

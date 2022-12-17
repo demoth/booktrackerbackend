@@ -22,9 +22,9 @@ class UserController(
     fun registerNewUser(
         @RequestBody user: User
     ): LoginResponse {
-        if (userRepository.findById(user.name).isPresent)
+        if (userRepository.findById(user.username).isPresent)
             throw BookTrackerException("This name is taken", HttpStatus.BAD_REQUEST)
         userRepository.save(user)
-        return authService.loginUser(user.name, user.password)
+        return authService.loginUser(user.username, user.password)
     }
 }

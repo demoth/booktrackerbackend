@@ -9,3 +9,8 @@ Stack:
  * Kotlin
  * Springboot
  * H2
+
+TODO:
+ * update libs: kotlin 1.7
+ * migrate to springboot 3
+ * migrate to webflux

@@ -7,7 +7,7 @@ import java.util.*
 
 @Repository
 interface BookRepository : CrudRepository<BookRecord, String> {
-    fun findByOwnerName(name: String): Iterable<BookRecord>
+    fun findByOwnerUsername(name: String): Iterable<BookRecord>
 
-    fun findByIdAndOwnerName(id: String, name: String): Optional<BookRecord>
+    fun findByIdAndOwnerUsername(id: String, name: String): Optional<BookRecord>
 }

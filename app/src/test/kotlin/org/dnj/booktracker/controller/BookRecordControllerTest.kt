@@ -117,14 +117,14 @@ class BookRecordControllerTest {
             String::class.java
         )
 
-        assertNotNull(bookRepository.findByOwnerName(TEST_USER.name).find {
+        assertNotNull(bookRepository.findByOwnerName(TEST_USER.username).find {
             it.name == "new book"
         })
 
     }
 
     private fun prepareAuthHeaders(): HttpHeaders {
-        val loginRequest = LoginRequest(TEST_USER.name, TEST_USER.password)
+        val loginRequest = LoginRequest(TEST_USER.username, TEST_USER.password)
         val loginResponse = rest.postForObject<LoginResponse>("/login", loginRequest, LoginRequest::class)
         val headers = HttpHeaders()
         headers.set("Authentication", "Bearer ${loginResponse!!.jwt}")

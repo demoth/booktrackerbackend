@@ -40,14 +40,14 @@ class LoginControllerTest {
 
     @Test
     fun login() {
-        val loginRequest = LoginRequest(TEST_USER.name, TEST_USER.password)
+        val loginRequest = LoginRequest(TEST_USER.username, TEST_USER.password)
         val response = rest.postForObject<LoginResponse>("/login", loginRequest, LoginRequest::class)
         authService.validateToken("Bearer ${response!!.jwt}")
     }
 
     @Test
     fun `wrong password`() {
-        val loginRequest = LoginRequest(TEST_USER.name, "wrong password")
+        val loginRequest = LoginRequest(TEST_USER.username, "wrong password")
         val response2 = rest.exchange("/login", HttpMethod.POST, HttpEntity(loginRequest), ErrorResponse::class.java)
         assertEquals(HttpStatus.UNAUTHORIZED, response2!!.statusCode)
     }
