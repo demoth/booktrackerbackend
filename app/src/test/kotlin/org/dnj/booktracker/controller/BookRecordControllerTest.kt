@@ -117,7 +117,7 @@ class BookRecordControllerTest {
             String::class.java
         )
 
-        assertNotNull(bookRepository.findByOwnerName(TEST_USER.username).find {
+        assertNotNull(bookRepository.findByOwnerUsername(TEST_USER.username).find {
             it.name == "new book"
         })
 

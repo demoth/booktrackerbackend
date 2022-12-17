@@ -20,7 +20,7 @@ class HealthControllerTest {
 
     @Test
     fun testHealth() {
-        val response = rest.getForObject("/health", String::class.java)
-        assertEquals("ok", response)
+        val response = rest.getForObject("/actuator/health", String::class.java)
+        assertEquals("""{"status":"UP"}""", response)
     }
 }
